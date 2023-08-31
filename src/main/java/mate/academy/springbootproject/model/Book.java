@@ -9,15 +9,10 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Objects;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.Hibernate;
 
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
 @Entity
 @Table(name = "books")
 public class Book {
@@ -41,15 +36,21 @@ public class Book {
         if (this == o) {
             return true;
         }
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         Book book = (Book) o;
-        return getId() != null && Objects.equals(getId(), book.getId());
+        return Objects.equals(id, book.id)
+                && Objects.equals(title, book.title)
+                && Objects.equals(author, book.author)
+                && Objects.equals(isbn, book.isbn)
+                && Objects.equals(price, book.price)
+                && Objects.equals(description, book.description)
+                && Objects.equals(coverImage, book.coverImage);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id, title, author, isbn, price, description, coverImage);
     }
 }
