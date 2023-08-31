@@ -1,6 +1,8 @@
 package mate.academy.springbootproject.repository.impl;
 
 import java.util.List;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import mate.academy.springbootproject.exception.DataProcessingException;
 import mate.academy.springbootproject.model.Book;
 import mate.academy.springbootproject.repository.BookRepository;
@@ -9,13 +11,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
+@RequiredArgsConstructor
 @Repository
 public class BookRepositoryImpl implements BookRepository {
     private final SessionFactory sessionFactory;
-
-    public BookRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public Book save(Book book) {
@@ -42,9 +41,18 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public List<Book> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from Book ", Book.class).getResultList();
+            return session.createQuery("FROM Book ", Book.class).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get all books from db", e);
+        }
+    }
+
+    @Override
+    public Optional<Book> findBookById(Long bookId) {
+        try (Session session = sessionFactory.openSession()) {
+            return Optional.ofNullable(session.get(Book.class, bookId));
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get book with id: " + bookId, e);
         }
     }
 }
