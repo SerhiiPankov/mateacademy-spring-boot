@@ -1,5 +1,6 @@
 package mate.academy.springbootproject.exception;
 
+import io.jsonwebtoken.JwtException;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -55,6 +57,38 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return handleExceptionInternal(ex,
                 getBody(HttpStatus.NOT_FOUND, ex.getMessage()),
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(value = UsernameNotFoundException.class)
+    protected ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex,
+                                                                   WebRequest request) {
+        return handleExceptionInternal(ex,
+                getBody(HttpStatus.NOT_FOUND, ex.getMessage()),
+                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(value = RegistrationException.class)
+    protected ResponseEntity<Object> handleRegistrationException(RegistrationException ex,
+                                                                     WebRequest request) {
+        return handleExceptionInternal(ex,
+                getBody(HttpStatus.CONFLICT, ex.getMessage()),
+                new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    @ExceptionHandler(value = JwtException.class)
+    protected ResponseEntity<Object> handleJwtException(JwtException ex,
+                                                                 WebRequest request) {
+        return handleExceptionInternal(ex,
+                getBody(HttpStatus.FORBIDDEN, ex.getMessage()),
+                new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+    }
+
+    @ExceptionHandler(value = java.sql.SQLException.class)
+    protected ResponseEntity<Object> handleJwtException(java.sql.SQLException ex,
+                                                        WebRequest request) {
+        return handleExceptionInternal(ex,
+                getBody(HttpStatus.NOT_ACCEPTABLE, ex.getMessage()),
+                new HttpHeaders(), HttpStatus.FORBIDDEN, request);
     }
 
     private Map<String, Object> getBody(HttpStatus status, String message) {

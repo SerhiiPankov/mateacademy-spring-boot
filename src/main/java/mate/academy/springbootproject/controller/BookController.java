@@ -12,12 +12,13 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import mate.academy.springbootproject.dto.BookDto;
-import mate.academy.springbootproject.dto.CreateBookRequestDto;
+import mate.academy.springbootproject.dto.book.BookDto;
+import mate.academy.springbootproject.dto.book.CreateBookRequestDto;
 import mate.academy.springbootproject.service.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,33 +61,6 @@ public class BookController {
         return bookService.getBookById(bookId);
     }
 
-    @PostMapping
-    @Operation(summary = "Create new book", description = "Create new book")
-    @ApiResponse(responseCode = "200", description = "Create new book",
-            content = {@Content(mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = BookDto.class)))})
-    public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookRequestDto) {
-        return bookService.save(bookRequestDto);
-    }
-
-    @PutMapping("/{bookId}")
-    @Operation(summary = "Update book", description = "Update book")
-    @ApiResponse(responseCode = "200", description = "Update book",
-            content = {@Content(mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = BookDto.class)))})
-    public BookDto updateBook(@PathVariable Long bookId,
-                              @RequestBody CreateBookRequestDto bookRequestDto) {
-        return bookService.updateBook(bookId, bookRequestDto);
-    }
-
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{bookId}")
-    @Operation(summary = "Delete book by Id", description = "Delete book by Id")
-    @ApiResponse(responseCode = "200", description = "Delete book")
-    public void deleteBook(@PathVariable Long bookId) {
-        bookService.deleteBook(bookId);
-    }
-
     @GetMapping("/search")
     @Operation(summary = "Get all books", description = "Get list of all available books")
     @ApiResponse(responseCode = "200", description = "All books",
@@ -95,7 +69,7 @@ public class BookController {
     @Parameters(value = {
             @Parameter(name = "page",
                     description = "Page number to search",
-            schema = @Schema(implementation = Integer.class)),
+                    schema = @Schema(implementation = Integer.class)),
             @Parameter(name = "size",
                     description = "Number of books per page",
                     schema = @Schema(implementation = Integer.class)),
@@ -110,5 +84,35 @@ public class BookController {
                     schema = @Schema(implementation = String[].class))})
     public Page<BookDto> searchBooks(Pageable pageable, @RequestBody Map<String, String[]> params) {
         return bookService.search(pageable, params);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping
+    @Operation(summary = "Create new book", description = "Create new book")
+    @ApiResponse(responseCode = "200", description = "Create new book",
+            content = {@Content(mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = BookDto.class)))})
+    public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookRequestDto) {
+        return bookService.save(bookRequestDto);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/{bookId}")
+    @Operation(summary = "Update book", description = "Update book")
+    @ApiResponse(responseCode = "200", description = "Update book",
+            content = {@Content(mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = BookDto.class)))})
+    public BookDto updateBook(@PathVariable Long bookId,
+                              @RequestBody CreateBookRequestDto bookRequestDto) {
+        return bookService.updateBook(bookId, bookRequestDto);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/{bookId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete book by Id", description = "Delete book by Id")
+    @ApiResponse(responseCode = "200", description = "Delete book")
+    public void deleteBook(@PathVariable Long bookId) {
+        bookService.deleteBook(bookId);
     }
 }

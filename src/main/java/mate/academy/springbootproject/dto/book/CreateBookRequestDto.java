@@ -1,4 +1,4 @@
-package mate.academy.springbootproject.dto;
+package mate.academy.springbootproject.dto.book;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Min;

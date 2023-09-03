@@ -1,11 +1,11 @@
-package mate.academy.springbootproject.repository.specification.book;
+package mate.academy.springbootproject.repository.book;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.springbootproject.exception.BadRequestException;
 import mate.academy.springbootproject.model.Book;
-import mate.academy.springbootproject.repository.specification.SpecificationProvider;
-import mate.academy.springbootproject.repository.specification.SpecificationProviderManager;
+import mate.academy.springbootproject.repository.SpecificationProvider;
+import mate.academy.springbootproject.repository.SpecificationProviderManager;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor

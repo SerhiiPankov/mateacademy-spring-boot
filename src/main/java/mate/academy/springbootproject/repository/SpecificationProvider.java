@@ -1,4 +1,4 @@
-package mate.academy.springbootproject.repository.specification;
+package mate.academy.springbootproject.repository;
 
 import org.springframework.data.jpa.domain.Specification;
 

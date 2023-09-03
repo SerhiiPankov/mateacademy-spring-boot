@@ -2,8 +2,8 @@ package mate.academy.springbootproject.service;
 
 import java.util.List;
 import java.util.Map;
-import mate.academy.springbootproject.dto.BookDto;
-import mate.academy.springbootproject.dto.CreateBookRequestDto;
+import mate.academy.springbootproject.dto.book.BookDto;
+import mate.academy.springbootproject.dto.book.CreateBookRequestDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

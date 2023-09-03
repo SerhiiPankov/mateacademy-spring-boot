@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import mate.academy.springbootproject.dto.BookDto;
-import mate.academy.springbootproject.dto.CreateBookRequestDto;
+import mate.academy.springbootproject.dto.book.BookDto;
+import mate.academy.springbootproject.dto.book.CreateBookRequestDto;
 import mate.academy.springbootproject.exception.EntityNotFoundException;
 import mate.academy.springbootproject.mapper.BookMapper;
 import mate.academy.springbootproject.model.Book;
-import mate.academy.springbootproject.repository.specification.book.BookRepository;
-import mate.academy.springbootproject.repository.specification.book.BookSpecificationBuilder;
+import mate.academy.springbootproject.repository.book.BookRepository;
+import mate.academy.springbootproject.repository.book.BookSpecificationBuilder;
 import mate.academy.springbootproject.service.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +43,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto updateBook(Long bookId, CreateBookRequestDto bookRequestDto) {
+        if (!bookRepository.existsById(bookId)) {
+            throw new EntityNotFoundException("Can't found book with id: " + bookId);
+        }
         Book book = bookMapper.toModel(bookRequestDto);
         book.setId(bookId);
         return bookMapper.toDto(bookRepository.save(book));

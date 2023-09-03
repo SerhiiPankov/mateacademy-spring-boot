@@ -49,17 +49,11 @@ public class Book {
             return false;
         }
         Book book = (Book) o;
-        return Objects.equals(id, book.id)
-                && Objects.equals(title, book.title)
-                && Objects.equals(author, book.author)
-                && Objects.equals(isbn, book.isbn)
-                && Objects.equals(price, book.price)
-                && Objects.equals(description, book.description)
-                && Objects.equals(coverImage, book.coverImage);
+        return Objects.equals(isbn, book.isbn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, author, isbn, price, description, coverImage);
+        return Objects.hash(isbn);
     }
 }

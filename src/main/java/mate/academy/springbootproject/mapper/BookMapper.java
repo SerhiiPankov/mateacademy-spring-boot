@@ -1,8 +1,8 @@
 package mate.academy.springbootproject.mapper;
 
 import mate.academy.springbootproject.config.MapperConfig;
-import mate.academy.springbootproject.dto.BookDto;
-import mate.academy.springbootproject.dto.CreateBookRequestDto;
+import mate.academy.springbootproject.dto.book.BookDto;
+import mate.academy.springbootproject.dto.book.CreateBookRequestDto;
 import mate.academy.springbootproject.model.Book;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

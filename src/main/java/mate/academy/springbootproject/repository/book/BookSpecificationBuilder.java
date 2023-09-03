@@ -1,10 +1,10 @@
-package mate.academy.springbootproject.repository.specification.book;
+package mate.academy.springbootproject.repository.book;
 
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import mate.academy.springbootproject.model.Book;
-import mate.academy.springbootproject.repository.specification.SpecificationBuilder;
-import mate.academy.springbootproject.repository.specification.SpecificationProviderManager;
+import mate.academy.springbootproject.repository.SpecificationBuilder;
+import mate.academy.springbootproject.repository.SpecificationProviderManager;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
